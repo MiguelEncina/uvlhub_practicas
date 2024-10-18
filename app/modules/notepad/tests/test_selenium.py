@@ -9,10 +9,21 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 
 class TestCreatenotepad():
   def setup_method(self, method):
-    self.driver = webdriver.Chrome()
+    # Configurar Selenium para usar Chromium
+    options = webdriver.ChromeOptions()
+
+    # Quita '--headless' para ejecutar el navegador de manera visible
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    
+    # Iniciar el driver de Chromium usando webdriver-manager
+    service = Service(ChromeDriverManager().install())
+    self.driver = webdriver.Chrome(service=service, options=options)
     self.vars = {}
   
   def teardown_method(self, method):
